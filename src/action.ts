@@ -1,27 +1,28 @@
+// import type z from "zod";
+
 import type z from "zod";
 
-class ActionShape<
-  InputSchema extends z.ZodTypeAny,
-  OutputSchema extends z.ZodTypeAny,
+export class ActionDef<
+  Input extends z.ZodTypeAny,
+  Output extends z.ZodTypeAny,
 > {
-  _input?: InputSchema;
-  _output?: OutputSchema;
+  public _input?: Input;
+  public _output?: Output;
 
-  constructor(public readonly identifier: string) {}
+  constructor(public identifier: string) {}
 
-  input<T extends z.ZodTypeAny>(schema: T): ActionShape<T, OutputSchema> {
-    this._input = schema as InputSchema;
-
+  input<T extends z.ZodTypeAny>(schema: T): ActionDef<T, Output> {
+    this._input = schema as any;
     return this as any;
   }
 
-  output(schema: z.ZodTypeAny) {
-    this._output = schema;
+  output<T extends z.ZodTypeAny>(schema: T): ActionDef<Input, T> {
+    this._input = schema as any;
 
-    return this;
+    return this as any;
   }
 }
 
 export function A(identifier: string) {
-  return new ActionShape(identifier);
+  return new ActionDef(identifier);
 }
