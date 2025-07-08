@@ -1,5 +1,5 @@
 import type z from "zod";
-import type { ActionDef } from "./action";
+import type { ActionDef } from "./helpers/action";
 
 type Logger = {
   info: () => void;
@@ -28,3 +28,11 @@ export type ActionHandler<T extends Action> = (args: {
   };
   logger: Logger;
 }) => z.infer<ExtractActionTypes<T, "output">>;
+
+export type ActionGroupHandler<Ag extends ActionGroup> = {
+  [AgK in keyof Ag]: Ag[AgK] extends Action
+    ? ActionHandler<Ag[AgK]>
+    : Ag[AgK] extends ActionGroup
+      ? ActionGroupHandler<Ag[AgK]>
+      : never;
+};
