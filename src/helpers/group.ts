@@ -1,8 +1,8 @@
 import type { Action, ActionGroup } from "../types";
 import { ActionDef } from "./action";
 
-class ActionGroupDef {
-  constructor(public def: ActionGroup) {}
+class ActionGroupDef<GroupDef extends ActionGroup> {
+  constructor(public def: GroupDef) {}
 
   getActions(input?: ActionGroup): Action[] {
     return Object.values(input ?? this.def).reduce<Array<Action>>(
