@@ -6,36 +6,25 @@ export class ActionDef<
   Input extends z.ZodTypeAny,
   Output extends z.ZodTypeAny,
 > {
-  public readonly _kind = "action" as const;
-  public readonly _identifier: string;
-  public _defs: {
-    input?: Input;
-    output?: Output;
-  } = {};
+  public readonly name: string;
+  public _input?: Input;
+  public _output?: Output;
 
-  constructor(identifier: string) {
-    this._identifier = identifier;
+  constructor(name: string) {
+    this.name = name;
   }
 
   input<T extends z.ZodTypeAny>(schema: T): ActionDef<T, Output> {
-    this._defs = {
-      input: schema as any,
-      output: this._defs.output,
-    };
-
+    this._input = schema as any;
     return this as any;
   }
 
   output<T extends z.ZodTypeAny>(schema: T): ActionDef<Input, T> {
-    this._defs = {
-      input: this._defs.input,
-      output: schema as any,
-    };
-
+    this._output = schema as any;
     return this as any;
   }
 }
 
-export function A(identifier: string) {
-  return new ActionDef(identifier);
+export function A(name: string) {
+  return new ActionDef(name);
 }

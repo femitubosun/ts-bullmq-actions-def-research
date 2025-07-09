@@ -1,6 +1,6 @@
 import z from "zod";
-import { A } from "./helpers/action";
-import { G } from "./helpers/group";
+import { A } from "../helpers/action";
+import { G } from "../helpers/group";
 
 export const docsAction = G({
   list: A("docs.list")

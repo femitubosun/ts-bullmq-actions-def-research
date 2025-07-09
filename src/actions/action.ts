@@ -1,5 +1,5 @@
 import z from "zod";
-import { A } from "./helpers/action";
+import { A } from "../helpers/action";
 
 export const actionDef = {
   create: A("documentation.create")

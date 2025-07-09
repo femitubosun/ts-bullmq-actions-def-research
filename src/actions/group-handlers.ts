@@ -1,12 +1,12 @@
+import type { ActionGroupHandler } from "../types";
 import type { docsAction } from "./group";
-import type { ActionGroupHandler } from "./types";
 
 const groupHandlers: ActionGroupHandler<typeof docsAction> = {
-  list: ({ context, logger, input }) => {
+  list: async ({ context, logger, input }) => {
     return [];
   },
   admin: {
-    listAll: ({ context, logger, input }) => {
+    listAll: async ({ context, logger, input }) => {
       return [{ id: "", url: "" }];
     },
   },

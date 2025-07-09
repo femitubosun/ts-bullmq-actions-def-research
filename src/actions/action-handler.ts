@@ -1,7 +1,7 @@
+import type { ActionHandler } from "../types";
 import type { actionDef } from "./action";
-import type { ActionHandler } from "./types";
 
-const actionHandler: ActionHandler<typeof actionDef.create> = ({
+const actionHandler: ActionHandler<typeof actionDef.create> = async ({
   context,
   input,
   logger,

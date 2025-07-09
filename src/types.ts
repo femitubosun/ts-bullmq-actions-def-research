@@ -28,8 +28,7 @@ export type ActionHandler<T extends Action> = (args: {
     userId: string;
   };
   logger: Logger;
-}) => z.infer<ExtractActionTypes<T, "output">>;
-
+}) => Promise<z.infer<ExtractActionTypes<T, "output">>>;
 
 type ExtractGroupDef<AgD> = AgD extends ActionGroupDef<infer Def> ? Def : never;
 
