@@ -11,7 +11,7 @@ const DocsSchema = z.object({
 });
 
 export const DocsGroup = G({
-  create: A("identifier")
+  create: A("docs.create")
     .input(
       DocsSchema.pick({
         name: true,

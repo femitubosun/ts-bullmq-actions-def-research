@@ -19,7 +19,7 @@ export const docsAction = G({
     ),
 
   admin: {
-    listAll: A("docs.admin.listAll")
+    listAll: A("docs.admin.listSome")
       .input(
         z.object({
           filters: z.string(),
@@ -35,3 +35,14 @@ export const docsAction = G({
       ),
   },
 });
+
+
+
+const obj = {
+    list: 'docs.list',
+    admin: {
+        list: 'docs.admin.listAll'
+    }
+}
+
+obj.admin.list

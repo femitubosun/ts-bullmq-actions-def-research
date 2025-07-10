@@ -9,7 +9,7 @@ const TaskSchema = z.object({
   status: z.boolean(),
 });
 
-export const TasksGroup = G({
+export const TaskActions = G({
   create: A("tasks.create")
     .input(
       TaskSchema.pick({
@@ -27,6 +27,10 @@ export const TasksGroup = G({
     .output(TaskSchema),
 
   list: A("tasks.list").output(TaskSchema.array()),
+
+  admin: {
+    deleteAll: A("tasks.admin.deleteAll").output(z.boolean()),
+  },
 });
 
-export type TaskGroupHandler = ActionGroupHandler<typeof TasksGroup>;
+export type TaskGroupHandler = ActionGroupHandler<typeof TaskActions>;
