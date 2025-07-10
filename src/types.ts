@@ -1,6 +1,5 @@
 import type z from "zod";
 import type { ActionDef } from "./helpers/action";
-import type { ActionGroupDef } from "./helpers/group";
 
 type Logger = {
   info: () => void;
@@ -28,9 +27,10 @@ export type ActionHandler<T extends Action> = (args: {
     userId: string;
   };
   logger: Logger;
-}) => Promise<z.infer<ExtractActionTypes<T, "output">>>;
-
-type ExtractGroupDef<AgD> = AgD extends ActionGroupDef<infer Def> ? Def : never;
+}) => Promise<{
+  data: z.infer<ExtractActionTypes<T, "output">>
+  context: any
+}>;
 
 type ActionGroupDefHandler<Ag extends ActionGroup> = {
   [AgK in keyof Ag]: Ag[AgK] extends Action
@@ -40,7 +40,7 @@ type ActionGroupDefHandler<Ag extends ActionGroup> = {
       : never;
 };
 
-export type ActionGroupHandler<T> = ActionGroupDefHandler<ExtractGroupDef<T>>;
+export type ActionGroupHandler<T extends ActionGroup> = ActionGroupDefHandler<T>;
 
 export type ActionRegistry = {
   [key: string]: {

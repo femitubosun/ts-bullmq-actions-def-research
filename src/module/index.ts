@@ -5,21 +5,21 @@
  * A module needs to be able to register its actions.
  *
  */
-import {ActionGroupDef} from "@/helpers/group";
 import {ActionGroup, ActionGroupHandler} from "@/types";
 import {MockBullMQWorker} from "@/bull-mq";
 import {ActionDef} from "@/helpers/action";
+import {getActionStructure} from "@/helpers/group-utils";
 
 
 
-export class Module<Module extends  ActionGroupDef<any>> {
-    public _handlers: Partial<ActionGroupHandler<Module>> = {};
+export class Module<T extends ActionGroup> {
+    public _handlers: Partial<ActionGroupHandler<T>> = {};
 
 
-    constructor(public name: string, public _actionGroup: Module) {
+    constructor(public name: string, public _actionGroup: T) {
     }
 
-    registerHandlers(config: Partial<ActionGroupHandler<Module>>) {
+    registerHandlers(config: Partial<ActionGroupHandler<T>>) {
         this._handlers = {
             ...this._handlers,
             ...config,
@@ -27,7 +27,7 @@ export class Module<Module extends  ActionGroupDef<any>> {
     }
 
     _actionNames(){
-        return this._actionGroup._struct()
+        return getActionStructure(this._actionGroup)
     }
 
 
@@ -63,13 +63,13 @@ export class Module<Module extends  ActionGroupDef<any>> {
 
 
 
-    static makeModule(name: string, g: ActionGroupDef<any> ){
+    static makeModule<T extends ActionGroup>(name: string, g: T ){
         return new Module(name, g)
     }
 
 }
 
-export function makeModule<T extends ActionGroupDef<any>>(string: string, g: T): Module<T>{
+export function makeModule<T extends ActionGroup>(string: string, g: T): Module<T>{
     return new Module(string, g)
 
 }
