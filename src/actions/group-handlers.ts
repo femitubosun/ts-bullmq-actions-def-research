@@ -3,11 +3,17 @@ import type { docsAction } from "./group";
 
 const groupHandlers: ActionGroupHandler<typeof docsAction> = {
   list: async ({ context, logger, input }) => {
-    return [];
+    return {
+      data: [],
+      context,
+    };
   },
   admin: {
     listAll: async ({ context, logger, input }) => {
-      return [{ id: "", url: "" }];
+      return {
+        data: [{ id: "", url: "" }],
+        context,
+      };
     },
   },
 };

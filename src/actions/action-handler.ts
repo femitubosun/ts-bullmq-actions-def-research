@@ -9,7 +9,10 @@ const actionHandler: ActionHandler<typeof actionDef.create> = async ({
   console.log(context.userId);
 
   return {
-    ...input,
-    id: "",
+    data: {
+      ...input,
+      id: "",
+    },
+    context,
   };
 };

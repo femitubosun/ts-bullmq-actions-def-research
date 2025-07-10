@@ -1,5 +1,6 @@
 import {makeModule, Module} from "@/module/index";
 import {docsAction} from "@/actions/group";
+import {callAction} from "@/caller/call-action";
 
 
 export const docsModule = makeModule('docs', docsAction)
@@ -29,3 +30,4 @@ docsModule.registerHandlers({
     }
 
 })
+

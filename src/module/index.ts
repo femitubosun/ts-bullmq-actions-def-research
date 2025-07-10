@@ -7,9 +7,8 @@
  */
 import {ActionGroup, ActionGroupHandler} from "@/types";
 import {MockBullMQWorker} from "@/bull-mq";
-import {ActionDef} from "@/helpers/action";
 import {getActionStructure} from "@/helpers/group-utils";
-
+import {actionRegistry} from "@/registry/action-registry";
 
 
 export class Module<T extends ActionGroup> {
@@ -48,11 +47,25 @@ export class Module<T extends ActionGroup> {
             
             if (item && typeof item === 'object') {
                 if (item.name && typeof item.name === 'string') {
-                    const handler = item.handler || (async (job: any) => {
+                    const originalHandler = item.handler || (async () => {
                         console.log(`No handler for ${item.name}`);
+                        return { data: null, context: {} };
                     });
                     
-                    new MockBullMQWorker(item.name, handler);
+                    const wrappedHandler = async (job: any) => {
+                        const { context, input } = job.data;
+                        const logger = {
+                            info: () => console.log(`[${item.name}] INFO`),
+                            error: () => console.error(`[${item.name}] ERROR`),
+                            warn: () => console.warn(`[${item.name}] WARN`),
+                            debug: () => console.debug(`[${item.name}] DEBUG`)
+                        };
+                        
+                        return await originalHandler({ input, context, logger });
+                    };
+                    
+                    const worker = new MockBullMQWorker(item.name, wrappedHandler);
+                    actionRegistry.registerWorker(item.name, worker);
                 } else {
                     this._createWorkersFromStructure(item);
                 }

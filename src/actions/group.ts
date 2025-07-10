@@ -2,7 +2,7 @@ import z from "zod";
 import { A } from "../helpers/action";
 import { G } from "../helpers/group";
 
-export const docsAction = G({
+export const  docsAction = G({
   list: A("docs.list")
     .input(
       z.object({
